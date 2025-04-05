@@ -11,7 +11,7 @@
 import torch
 import triton
 import triton.language as tl
-from vllm._C import ops
+from vllm import _custom_ops as ops
 
 
 @triton.jit()
@@ -222,7 +222,9 @@ def fused_moe(hidden_states: torch.Tensor,
               w2: torch.Tensor,
               topk_weights: torch.Tensor,
               topk_ids: torch.Tensor,
+              config: dict,
               inplace=False):
+    print(config)
     """
     This function computes a Mixture of Experts (MoE) layer using two sets of weights, w1 and w2, and top-k gating mechanism.
 
@@ -246,18 +248,18 @@ def fused_moe(hidden_states: torch.Tensor,
     M, _ = hidden_states.shape
     E, N, _ = w1.shape
 
-    config = {
-        'block_m': 64,
-        'block_n': 64,
-        'block_k': 32,
-    }
-
-    if topk_ids.numel() <= w1.shape[0]:
-        config = {
-            'block_m': 16,
-            'block_n': 32,
-            'block_k': 64,
-        }
+#    config = {
+#        'block_m': 64,
+#        'block_n': 64,
+#        'block_k': 32,
+#    }
+#
+#    if topk_ids.numel() <= w1.shape[0]:
+#        config = {
+#            'block_m': 16,
+#            'block_n': 32,
+#            'block_k': 64,
+#        }
 
     intermediate_cache1 = torch.empty((M, topk_ids.shape[1], N),
                                       device=hidden_states.device,
@@ -277,7 +279,7 @@ def fused_moe(hidden_states: torch.Tensor,
                             expert_ids, num_tokens_post_padded, False,
                             topk_ids.shape[1], config)
 
-    ops.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
+    torch.ops._C.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
 
     invoke_fused_moe_kernel(intermediate_cache2, w2, intermediate_cache3,
                             topk_weights, topk_ids, sorted_token_ids,

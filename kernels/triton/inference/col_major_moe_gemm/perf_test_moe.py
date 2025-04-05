@@ -71,56 +71,69 @@ def test_fused_moe(
 
     print(f"Col Major Speedup {((gl_time - cm_major_time)/(gl_time))*100}")
 
+# 定义块大小配置
+configs = [
+    {'block_m': m, 'block_n': n, 'block_k': k} for m in [32, 64, 128, 256] for n in [32, 64, 128, 256] for k in [32, 64, 128, 256] if (n*m*k <= 32*128*128) # limited by memory
+]
 
-if __name__ == '__main__':
+# 生成 line_vals 和 line_names
+line_vals = [f"{kernel}_{i}" for i in range(len(configs)) for kernel in ['cm']]
+line_names = [f"{kernel.upper()} block_m={configs[i]['block_m']} block_n={configs[i]['block_n']} block_k={configs[i]['block_k']}" for i in range(len(configs)) for kernel in ['cm']]
 
-
-    # test_fused_moe(512, 14336//2, 4096, 8, 2, torch.float16)
-
-    @triton.testing.perf_report(
+@triton.testing.perf_report(
     triton.testing.Benchmark(
-        x_names=['m'],  # Argument names to use as an x-axis for the plot
-        x_vals=[
-            2**i for i in range(0, 10)
-        ],  # Different possible values for `x_name`
-        line_arg='provider',  # Argument name whose value corresponds to a different line in the plot
-        # Possible values for `line_arg`
-        line_vals=['cm', 'gl'],
-        # Label name for the lines
-        line_names=["Fused MoE GEMM Kernel - Column Major", "vLLM MoE GEMM Kernel"],
-
-        # Line styles
-        styles=[('blue', '-'), ('green', '-')],
-        ylabel="TFLOPS",  # Label name for the y-axis
-        plot_name="test",  # Name for the plot, used also as a file name for saving the plot.
+        x_names=['m'],  # x 轴为 m
+        x_vals=[2**i for i in range(0, 10)],  # m 的不同值
+        line_arg='provider',  # 用于区分不同曲线的参数
+        line_vals=line_vals,  # 内核类型和 config 索引的组合
+        line_names=line_names,  # 每条曲线的可读名称
+        ylabel="TFLOPS",  # y 轴标签
+        plot_name="fused-moe-blocksize-performance",  # 图表名称
         args={},
     )
 )
-    def benchmark(m, provider):
+def benchmark(m, provider):
+    # 解析 provider 以获取内核类型和 config 索引
+    kernel_type, config_idx = provider.split('_')
+    config_idx = int(config_idx)
+    config = configs[config_idx]
 
-        m = m
-        n = 14336//2
-        k = 4096
-        e = 8
-        topk = 2
+    # 固定参数
+    n = 14336 // 2
+    k = 4096
+    e = 8
+    topk = 2
+    dtype = torch.float16
 
-        torch.cuda.manual_seed(3227)
-        dtype = torch.float16
+    # 设置随机种子以确保可重复性
+    torch.cuda.manual_seed(3227)
 
-        a = torch.randn((m, k), device='cuda', dtype=dtype) / 10
-        w1 = torch.randn((e, 2 * n, k), device='cuda', dtype=dtype) / 10
-        w2 = torch.randn((e, k, n), device='cuda', dtype=dtype) / 10
+    # 生成输入张量
+    a = torch.randn((m, k), device='cuda', dtype=dtype) / 10
+    w1 = torch.randn((e, 2 * n, k), device='cuda', dtype=dtype) / 10
+    w2 = torch.randn((e, k, n), device='cuda', dtype=dtype) / 10
+    score = torch.randn((m, e), device='cuda', dtype=dtype)
+    score = torch.softmax(score, dim=-1)
+    topk_weight, topk_ids = torch.topk(score, topk)
 
-        score = torch.randn((m, e), device='cuda', dtype=dtype)
-        score = torch.softmax(score, dim=-1)
-        topk_weight, topk_ids = torch.topk(score, topk)
+    # 根据内核类型运行基准测试
+    quantiles = [0.5, 0.2, 0.8]
+    if kernel_type == 'cm':
+        ms, min_ms, max_ms = triton.testing.do_bench(
+            lambda: fused_moe_col(a, w1, w2, topk_weight, topk_ids, config, False),
+            quantiles=quantiles
+        )
+    elif kernel_type == 'gl':
+        ms, min_ms, max_ms = triton.testing.do_bench(
+            lambda: fused_moe_grouped(a, w1, w2, topk_weight, topk_ids, False),
+            quantiles=quantiles
+        )
+    else:
+        raise ValueError(f"未知的内核类型: {kernel_type}")
 
-        quantiles = [0.5, 0.2, 0.8]
-        if provider == 'cm':
-            ms, min_ms, max_ms = triton.testing.do_bench(lambda: fused_moe_col(a, w1, w2, topk_weight, topk_ids, False), quantiles=quantiles)
-        if provider == 'gl':
-            ms, min_ms, max_ms = triton.testing.do_bench(lambda: fused_moe_grouped(a, w1, w2, topk_weight, topk_ids, False), quantiles=quantiles)
-        perf = lambda ms: 2 * m * n * k * 1e-12 / (ms * 1e-3)
-        return perf(ms), perf(max_ms), perf(min_ms)
+    # 计算 TFLOPS
+    perf = lambda ms: 2 * m * n * k * 1e-12 / (ms * 1e-3)
+    return perf(ms), perf(max_ms), perf(min_ms)
 
-benchmark.run(show_plots=True, print_data=True, save_path='./')
+if __name__ == '__main__':
+    benchmark.run(show_plots=True, print_data=True, save_path='./')

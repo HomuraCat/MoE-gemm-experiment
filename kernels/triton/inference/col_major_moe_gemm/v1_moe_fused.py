@@ -11,7 +11,7 @@
 import torch
 import triton
 import triton.language as tl
-from vllm._C import ops
+from vllm import _custom_ops as ops
 from typing import Any, Dict, Optional
 import functools
 import json
@@ -330,7 +330,7 @@ def fused_moe(hidden_states: torch.Tensor,
                             topk_ids.shape[1], config_w1)
 
 
-    ops.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
+    torch.ops._C.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
 
     invoke_fused_moe_kernel(intermediate_cache2, w2, intermediate_cache3,
                             topk_weights, topk_ids, sorted_token_ids,
