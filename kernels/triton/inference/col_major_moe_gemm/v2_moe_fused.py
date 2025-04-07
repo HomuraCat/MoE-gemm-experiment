@@ -189,6 +189,7 @@ def invoke_fused_moe_kernel(A: torch.Tensor, B: torch.Tensor, C: torch.Tensor,
     N = B.shape[1]
 
     grid = lambda META: (triton.cdiv(EM, META['block_m']) * triton.cdiv(N, META['block_n']), )
+    print('EM =', EM, 'N =', N, grid)
     fused_moe_kernel[grid](
         A,
         B,

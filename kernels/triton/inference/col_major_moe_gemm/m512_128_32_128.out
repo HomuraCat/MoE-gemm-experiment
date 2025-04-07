@@ -1,0 +1,79 @@
+INFO 04-07 16:41:40 [__init__.py:239] Automatically detected platform cuda.
+==PROF== Connected to process 38310 (/usr/bin/python3.10)
+==PROF== Profiling "distribution_elementwise_grid..." - 0: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 1: 0%....50%....100% - 40 passes
+==PROF== Profiling "distribution_elementwise_grid..." - 2: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 3: 0%....50%....100% - 40 passes
+==PROF== Profiling "distribution_elementwise_grid..." - 4: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 5: 0%....50%....100% - 40 passes
+==PROF== Profiling "distribution_elementwise_grid..." - 6: 0%....50%....100% - 40 passes
+==PROF== Profiling "softmax_warp_forward" - 7: 0%....50%....100% - 40 passes
+==PROF== Profiling "gatherTopK" - 8: 0%....50%....100% - 40 passes
+==PROF== Profiling "bitonicSortKVInPlace" - 9: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 10: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 11: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 12: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 13: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 14: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 15: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 16: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 17: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 18: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 19: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 20: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 21: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 22: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 23: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 24: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 25: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 26: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 27: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 28: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 29: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 30: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 31: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 32: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 33: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 34: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 35: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 36: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 37: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 38: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 39: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 40: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 41: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 42: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 43: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 44: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 45: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 46: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 47: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 48: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 49: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 50: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 51: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 52: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 53: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 54: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 55: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 56: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 57: 0%....50%....100% - 40 passes
+==PROF== Profiling "vectorized_elementwise_kernel" - 58: 0%....50%....100% - 40 passes
+==PROF== Profiling "moe_align_block_size_kernel" - 59: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 60: 0%....50%....100% - 40 passes
+==PROF== Profiling "act_and_mul_kernel" - 61: 0%....50%....100% - 40 passes
+==PROF== Profiling "fused_moe_kernel" - 62: 0%....50%....100% - 40 passes
+==PROF== Profiling "reduce_kernel" - 63: 0%....50%....100% - 40 passes
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+{'block_m': 128, 'block_n': 32, 'block_k': 128}
+fused-moe-blocksize-performance:
+       m  CM block_m=128 block_n=32 block_k=128
+0  512.0                                0.00348
+==PROF== Disconnected from process 38310
+==PROF== Report: /mnt/c/workspace/applied-ai/kernels/triton/inference/col_major_moe_gemm/./m512_128_32_128.ncu-rep

@@ -72,9 +72,14 @@ def test_fused_moe(
     print(f"Col Major Speedup {((gl_time - cm_major_time)/(gl_time))*100}")
 
 # 定义块大小配置
-configs = [
-    {'block_m': m, 'block_n': n, 'block_k': k} for m in [32, 64, 128, 256] for n in [32, 64, 128, 256] for k in [32, 64, 128, 256] if (n*m*k <= 32*128*128) # limited by memory
-]
+# configs = [
+#     {'block_m': m, 'block_n': n, 'block_k': k} for m in [32, 64, 128, 256] for n in [32, 64, 128, 256] for k in [32, 64, 128, 256] if (n*m*k <= 32*128*128) # limited by memory
+# ]
+# m_range = [2**i for i in range(0, 10)]
+
+#configs = [{'block_m': 64, 'block_n': 64, 'block_k': 32}]
+configs = [{'block_m': 32, 'block_n': 32, 'block_k': 256}]
+m_range = [2]
 
 # 生成 line_vals 和 line_names
 line_vals = [f"{kernel}_{i}" for i in range(len(configs)) for kernel in ['cm']]
@@ -83,7 +88,7 @@ line_names = [f"{kernel.upper()} block_m={configs[i]['block_m']} block_n={config
 @triton.testing.perf_report(
     triton.testing.Benchmark(
         x_names=['m'],  # x 轴为 m
-        x_vals=[2**i for i in range(0, 10)],  # m 的不同值
+        x_vals=m_range,  # m 的不同值
         line_arg='provider',  # 用于区分不同曲线的参数
         line_vals=line_vals,  # 内核类型和 config 索引的组合
         line_names=line_names,  # 每条曲线的可读名称

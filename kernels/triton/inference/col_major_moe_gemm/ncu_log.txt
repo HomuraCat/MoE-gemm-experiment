@@ -1,0 +1,3 @@
+==PROF== Connected to process 18321 (/mnt/c/workspace/applied-ai/kernels/triton/inference/col_major_moe_gemm/test)
+==ERROR== Unknown Error on device 0.
+==PROF== Disconnected from process 18321
