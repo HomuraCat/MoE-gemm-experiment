@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from matplotlib import rcParams
 # 读取 CSV 文件
+rcParams['font.family'] = 'Times New Roman'
 file_path = "./test.csv"
 data = pd.read_csv(file_path)
 
@@ -23,9 +24,9 @@ legend_labels = [
 ]
 
 # 绘制折线图
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(9, 6))
 for col, label in zip(selected_columns, legend_labels):
-    plt.plot(x, data[col], marker='o', label=label)
+    plt.plot(x, data[col], label=label)
 
 # 添加标题和标签
 plt.title('Performance with different block size', fontsize=16)
@@ -33,13 +34,13 @@ plt.xlabel('Batch', fontsize=14)
 plt.ylabel('TFLOPS', fontsize=14)
 
 # 显示图例在绘图右侧
-plt.legend(loc='upper left', bbox_to_anchor=(1.05, 1), fontsize=10)
+plt.legend(loc='upper left', fontsize=15)
 
 # 显示网格
 plt.grid(True)
 
 # 调整布局以适应图例
-plt.tight_layout(rect=[0, 0, 0.85, 1])
+plt.tight_layout()
 
 # 保存图形
-plt.savefig("test.png")
+plt.savefig("test.pdf")
