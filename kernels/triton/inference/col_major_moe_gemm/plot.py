@@ -30,7 +30,7 @@ for col, label in zip(selected_columns, legend_labels):
 
 # 添加标题和标签
 plt.title('Performance with different block size', fontsize=16)
-plt.xlabel('Batch', fontsize=14)
+plt.xlabel('M', fontsize=14)
 plt.ylabel('TFLOPS', fontsize=14)
 
 # 显示图例在绘图右侧

@@ -78,7 +78,7 @@ def test_fused_moe(
 # m_range = [2**i for i in range(0, 10)]
 
 #configs = [{'block_m': 64, 'block_n': 64, 'block_k': 32}]
-configs = [{'block_m': 32, 'block_n': 32, 'block_k': 256}]
+configs = [{'block_m': 32, 'block_n': 32, 'block_k': 128}]
 m_range = [2]
 
 # 生成 line_vals 和 line_names

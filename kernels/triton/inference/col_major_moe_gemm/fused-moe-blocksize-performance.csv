@@ -1,2 +1,2 @@
-m,CM block_m=32 block_n=32 block_k=256
-2.000000,0.796444
+m,CM block_m=32 block_n=32 block_k=128
+2.000000,0.000017
